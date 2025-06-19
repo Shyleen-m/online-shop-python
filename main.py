@@ -6,7 +6,8 @@ def display_menu():
     print("1. Add Product to Cart")
     print("2. Remove Product from Cart")
     print("3. View Cart")
-    print("4. Exit")
+    print("4. Checkout")
+    print("5. Exit")
 
 def run():
     products = [
@@ -23,29 +24,45 @@ def run():
 
     while True: 
         display_menu()
-        choice = input("Select an option (1-4): ")
+        choice = input("Select an option (1-5): ")
 
         if choice == '1':
             print("\nAvailable Products:")
-            for product in products:
-                print(product)
-            product_name = input("Enter the product name to add: ")
+            for index, product in enumerate(products):
+                print(f"{index + 1}. {product}")  # Display products with numbers
+            product_index = int(input("Select the product number to add: ")) - 1
             quantity = int(input("Enter the quantity: "))
-            for product in products:
-                if product.name.lower() == product_name.lower():
-                    user.cart.add_product(product, quantity)
-                    break
+            if 0 <= product_index < len(products):
+                user.cart.add_product(products[product_index], quantity)
             else:
-                print("Product not found.")
+                print("Invalid product selection.")
 
         elif choice == '2':
-            product_name = input("Enter the product name to remove: ")
-            user.cart.remove_product(product_name)
+            print("\nYour Cart:")
+            for index, item in enumerate(user.cart.items.keys()):
+                print(f"{index + 1}. {item}")  # Display cart items with numbers
+            product_index = int(input("Select the product number to remove: ")) - 1
+            if 0 <= product_index < len(user.cart.items):
+                product_name = list(user.cart.items.keys())[product_index]
+                quantity = int(input(f"Enter the quantity of {product_name} to remove: "))
+                user.cart.remove_product(product_name, quantity)
+            else:
+                print("Invalid product selection.")
 
         elif choice == '3':
             user.view_cart()
 
         elif choice == '4':
+            print("Checking out...")
+            user.view_cart()  # Show cart before checkout
+            confirm = input("Do you want to confirm the checkout? (yes/no): ").strip().lower()
+            if confirm == 'yes':
+                print("Thank you for your purchase!")
+                user.cart.items.clear()  # Clear the cart after checkout
+            else:
+                print("Returning to the main menu.")
+
+        elif choice == '5':
             print("Exiting the application.")
             break
 
