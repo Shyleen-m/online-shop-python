@@ -29,7 +29,7 @@ def run():
         if choice == '1':
             print("\nAvailable Products:")
             for index, product in enumerate(products):
-                print(f"{index + 1}. {product}")  # Display products with numbers
+                print(f"{index + 1}. {product}")  
             product_index = int(input("Select the product number to add: ")) - 1
             quantity = int(input("Enter the quantity: "))
             if 0 <= product_index < len(products):
@@ -40,7 +40,7 @@ def run():
         elif choice == '2':
             print("\nYour Cart:")
             for index, item in enumerate(user.cart.items.keys()):
-                print(f"{index + 1}. {item}")  # Display cart items with numbers
+                print(f"{index + 1}. {item}") 
             product_index = int(input("Select the product number to remove: ")) - 1
             if 0 <= product_index < len(user.cart.items):
                 product_name = list(user.cart.items.keys())[product_index]
@@ -54,11 +54,11 @@ def run():
 
         elif choice == '4':
             print("Checking out...")
-            user.view_cart()  # Show cart before checkout
+            user.view_cart()  
             confirm = input("Do you want to confirm the checkout? (yes/no): ").strip().lower()
             if confirm == 'yes':
                 print("Thank you for your purchase!")
-                user.cart.items.clear()  # Clear the cart after checkout
+                user.cart.items.clear()  
             else:
                 print("Returning to the main menu.")
 
