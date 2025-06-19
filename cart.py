@@ -18,16 +18,14 @@ class Cart:
     def remove_product(self, product_name, quantity):
         if product_name in self.items:
             if quantity >= self.items[product_name]['quantity']:
-                # If the quantity to remove is greater than or equal to what's in the cart, remove the item completely
                 product = self.items[product_name]['product']
-                product.stock += self.items[product_name]['quantity']  # Restore stock
+                product.stock += self.items[product_name]['quantity']  
                 del self.items[product_name]
                 print(f"Removed {product_name} from the cart.")
             else:
-                # Reduce the quantity in the cart
                 self.items[product_name]['quantity'] -= quantity
                 product = self.items[product_name]['product']
-                product.stock += quantity  # Restore stock for the removed quantity
+                product.stock += quantity 
                 print(f"Removed {quantity} of {product_name} from the cart.")
         else:
             print(f"{product_name} is not in the cart.")
