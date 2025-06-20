@@ -5,9 +5,10 @@ class User:
         self.username = username
         self.cart = Cart()
 
-    def __str__(self):
-        return f":User  {self.username}"
-
     def view_cart(self):
-        print(f"{self.username}'s Cart:")
-        self.cart.view_cart()
+        print(f"\n{self.username}'s Shopping Cart:")
+        if self.cart.is_empty():
+            print("Your cart is empty.")
+        else:
+            for product, quantity in self.cart.items.items():
+                print(f"{product.name} - Quantity: {quantity}")

@@ -30,35 +30,50 @@ def run():
             print("\nAvailable Products:")
             for index, product in enumerate(products):
                 print(f"{index + 1}. {product}")  
-            product_index = int(input("Select the product number to add: ")) - 1
-            quantity = int(input("Enter the quantity: "))
-            if 0 <= product_index < len(products):
-                user.cart.add_product(products[product_index], quantity)
-            else:
-                print("Invalid product selection.")
+            try:
+                product_index = int(input("Select the product number to add: ")) - 1
+                quantity = int(input("Enter the quantity: "))
+                if 0 <= product_index < len(products):
+                    user.cart.add_product(products[product_index], quantity)
+                else:
+                    print("Invalid product selection.")
+            except ValueError:
+                print("Invalid input. Please enter numbers only.")
 
         elif choice == '2':
+            if user.cart.is_empty():
+                print("Your cart is empty.")
+                continue
             print("\nYour Cart:")
-            for index, item in enumerate(user.cart.items.keys()):
-                print(f"{index + 1}. {item}") 
-            product_index = int(input("Select the product number to remove: ")) - 1
-            if 0 <= product_index < len(user.cart.items):
-                product_name = list(user.cart.items.keys())[product_index]
-                quantity = int(input(f"Enter the quantity of {product_name} to remove: "))
-                user.cart.remove_product(product_name, quantity)
-            else:
-                print("Invalid product selection.")
+            cart_products = list(user.cart.items.keys())
+            for index, product in enumerate(cart_products):
+                print(f"{index + 1}. {product}")
+            try:
+                product_index = int(input("Select the product number to remove: ")) - 1
+                if 0 <= product_index < len(cart_products):
+                    product = cart_products[product_index]
+                    quantity = int(input(f"Enter the quantity of {product.name} to remove: "))
+                    user.cart.remove_product(product, quantity)
+                else:
+                    print("Invalid product selection.")
+            except ValueError:
+                print("Invalid input. Please enter numbers only.")
 
         elif choice == '3':
             user.view_cart()
 
         elif choice == '4':
-            print("Checking out...")
-            user.view_cart()  
+            if user.cart.is_empty():
+                print("Your cart is empty. Nothing to checkout.")
+                continue
+            print("\nChecking out...")
+            user.view_cart()
+            total = user.cart.calculate_total()
+            print(f"\nTotal amount: ${total:.2f}")
             confirm = input("Do you want to confirm the checkout? (yes/no): ").strip().lower()
             if confirm == 'yes':
                 print("Thank you for your purchase!")
-                user.cart.items.clear()  
+                user.cart.items.clear()
             else:
                 print("Returning to the main menu.")
 
